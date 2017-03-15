@@ -3,18 +3,20 @@ MAINTAINER Felix Bartels "felix@host-consultants.de"
 
 RUN apt-get update -y
 
-RUN apt-get install -y wget ssl-cert
+RUN apt-get install -y wget ssl-cert nano
 
 # Installing packages (from here on its the same for devserver5 and the latest release)
 RUN apt-get update -y
 RUN apt-get install --allow-unauthenticated --assume-yes \
-	php5-cli php-soap php5-mapi
+	php5-cli php-soap php5-mapi php5-curl
 RUN a2enmod ssl && a2ensite default-ssl
 
 # Downloading and installing Z-Push
-RUN mkdir -p mkdir -p /usr/share/z-push \
-	&& wget --quiet http://download.z-push.org/beta/2.2/z-push-2.2.2beta-1972.tar.gz -O- \
-	| tar zx -C /usr/share/z-push/ --strip-components=1
+RUN mkdir -p mkdir -p /usr/share/z-push
+# RUN wget --quiet http://download.z-push.org/final/2.3/z-push-2.3.5.tar.gz -O- \
+#	| tar zx -C /usr/share/z-push/ --strip-components=1
+ADD /source2 /usr/share
+
 RUN mkdir -p /var/lib/z-push \
 	&& mkdir /var/log/z-push \
 	&& chown www-data:www-data /var/lib/z-push \
@@ -22,14 +24,21 @@ RUN mkdir -p /var/lib/z-push \
 RUN ln -s /usr/share/z-push/z-push-admin.php /usr/sbin/z-push-admin \
 	&& ln -s /usr/share/z-push/z-push-top.php /usr/sbin/z-push-top
 
+ENV SERVERNAME mobile.tryfirst.eu
+
 # needed for 7.2 packages
+RUN rm -Rf /etc/php5/cli/conf.d
 RUN ln -s /etc/php5/apache2/conf.d/zarafa.ini /etc/php5/cli/conf.d
 COPY /conf/logrotate-z-push /etc/logrotate.d/z-push
 COPY /conf/apache-z-push.conf /etc/apache2/sites-available/z-push.conf
 RUN a2ensite z-push
 
+# z-push Zimbra backend
+# RUN	wget -O - "http://downloads.sourceforge.net/project/zimbrabackend/Release66/zimbra66.tgz?use_mirror=freefr" \
+#	| tar zx -C /usr/share/z-push/backend/zimbra --strip-components=1
+
 # External mounts
-VOLUME ["/var/lib/z-push"]
+# VOLUME ["/var/lib/z-push"]
 
 # Entry-Script
 COPY /scripts/init.sh /usr/local/bin/init.sh

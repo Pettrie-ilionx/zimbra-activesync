@@ -10,6 +10,8 @@ ref
 * Z-Push Wiki https://wiki.z-hub.io/display/ZP/Documentation
 * Z-Push + Zimbra https://vwiki.co.uk/Z-Push_v2_with_Zimbra#Z-Push_Config
 
+* Docker NGinx - LetsEncrypt https://hub.docker.com/r/jrcs/letsencrypt-nginx-proxy-companion/
+
 ## Get started
 
 It's very simple, first, get it :
@@ -21,13 +23,13 @@ docker pull camillebaronnet/zimbra-activesync
 And run it :
 
 ```bash
-docker run -d \
-	-p 80:80 \
-	-e ZIMBRA_HOST=mail.tryfirst.eu \
-	-e ZPUSH_URL=mobile.tryfirst.eu \
-	--name zimbra-activesync
-	tryfirst/zimbra-activesync
+docker run -d -p 4201:80 -e ZIMBRA_HOST=mail.tryfirst.eu -e ZPUSH_URL=mobile.tryfirst.eu --name zimbra-activesync tryfirst/zimbra-activesync
 ```
+
+docker commit [CONTAINER_ID] temporary_image
+docker run --entrypoint=bash -it temporary_image
+
+wget --quiet http://download.z-push.org/final/2.3/z-push-2.3.5.tar.gz -O- | tar zx -C . --strip-components=1
 
 ## From Github
 
@@ -38,4 +40,31 @@ git pull https://github.com/Pettrie-ilionx/zimbra-activesync.git
 cd zimbra-activesync
 docker build -t tryfirst/zimbra-activesync .
 docker run [...] zimbra-activesync
+```
+
+
+## test autodiscover
+
+* http://localhost:4201/Autodiscover/Autodiscover.xml
+
+**Mobile**
+```xml
+<?xml version="1.0" encoding="utf-8" ?>
+<Autodiscover xmlns="http://schemas.microsoft.com/exchange/autodiscover/mobilesync/requestschema/2006">
+<Request>
+<AcceptableResponseSchema>http://schemas.microsoft.com/exchange/autodiscover/mobilesync/responseschema/2006</AcceptableResponseSchema>
+<EMailAddress>info@tryfirst.eu</EMailAddress>
+</Request>
+</Autodiscover>
+```
+
+**outlook**
+```xml
+<?xml version="1.0" encoding="utf-8" ?>
+<Autodiscover xmlns="http://schemas.microsoft.com/exchange/autodiscover/outlook/requestschema/2006">
+<Request>
+<AcceptableResponseSchema>http://schemas.microsoft.com/exchange/autodiscover/outlook/responseschema/2006a</AcceptableResponseSchema>
+<EMailAddress>info@tryfirst.eu</EMailAddress>
+</Request>
+</Autodiscover>
 ```

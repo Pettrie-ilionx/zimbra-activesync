@@ -28,8 +28,8 @@
     // required.
 //    define('ZIMBRA_URL', 'http://zimbraServerNAme');
 //    define('ZIMBRA_URL', 'https://zimbraServerNAme');
-//    define('ZIMBRA_URL', 'http://127.0.0.1');  
-//    define('ZIMBRA_URL', 'https://127.0.0.1');  
+//    define('ZIMBRA_URL', 'http://127.0.0.1');  // !@#
+    define('ZIMBRA_URL', 'https://mail.tryfirst.eu');  
 
     // By default the zimbra backend does not enforce certificate validation for connections 
     // to zimbra as many people run zimbra FOSS using self-signed certificates. If verification 
@@ -43,7 +43,7 @@
     // When using external LDAP authentication zimbra can send a redirect page when the user
     // attempts to login. In this case for z-push to work it is necessary to enable the option
     // ZIMBRA_URL_ALLOW_REDIRECT. Simply uncomment the line below to enable it.	
-//	define('ZIMBRA_URL_ALLOW_REDIRECT', true); 
+	define('ZIMBRA_URL_ALLOW_REDIRECT', true);  // !@#
 
     // The default behaviour of the ZimbraBackend is to override whatever URL is provided in
     // the ZIMBRA_URL setting above with the value of publicURL returned from zimbra when the
@@ -183,7 +183,7 @@
     // 'setup' - only the additional logging in the folder selection functions is enabled
     // 'username' - zimbra additional logging is enabled for one user - username
     // 'user1,user2,user3,etc' - zimbra additional logging is enabled for the list of users
-//	define('ZIMBRA_DEBUG',true);
+	define('ZIMBRA_DEBUG',true);
 //	define('ZIMBRA_DEBUG','setup');
 //	define('ZIMBRA_DEBUG','username');
 	
