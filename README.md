@@ -42,10 +42,12 @@ docker build -t tryfirst/zimbra-activesync .
 docker run [...] zimbra-activesync
 ```
 
-
 ## test autodiscover
 
 * http://localhost:4201/Autodiscover/Autodiscover.xml
+* Add headers:
+    * Content-Type      text/xml
+    * Authorization     Basic dGltQGJpbnN0YXIubmw6MTJ0aW05OA==
 
 **Mobile**
 ```xml
